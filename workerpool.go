@@ -27,6 +27,24 @@ func (w workerFunc) Do(task func()) {
 
 func (w workerFunc) Done() {}
 
+type (
+	Option        func(*WorkerPool)
+	WorkerFactory func() Worker
+)
+
+// WithWorkerFactory is used to set the WorkerFactory on WorkerPool
+func WithWorkerFactory(f WorkerFactory) Option {
+	return func(p *WorkerPool) {
+		p.workerFactory = f
+	}
+}
+
+func defaultWorkerFactory() Worker {
+	return workerFunc(func(task func()) {
+		task()
+	})
+}
+
 // New creates and starts a pool of worker goroutines.
 //
 // The maxWorkers parameter specifies the maximum number of workers that can
