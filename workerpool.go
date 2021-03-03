@@ -19,6 +19,14 @@ type Worker interface {
 	Done()
 }
 
+type workerFunc func(task func())
+
+func (w workerFunc) Do(task func()) {
+	w(task)
+}
+
+func (w workerFunc) Done() {}
+
 // New creates and starts a pool of worker goroutines.
 //
 // The maxWorkers parameter specifies the maximum number of workers that can
