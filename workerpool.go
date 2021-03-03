@@ -14,6 +14,11 @@ const (
 	idleTimeout = 2 * time.Second
 )
 
+type Worker interface {
+	Do(task func())
+	Done()
+}
+
 // New creates and starts a pool of worker goroutines.
 //
 // The maxWorkers parameter specifies the maximum number of workers that can
